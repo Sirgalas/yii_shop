@@ -50,8 +50,6 @@ return [
             return Yii::$app->get('backendUrlManager');
         },
         'frontendUrlManager' => require  __DIR__.'/../../frontend/config/urlManager.php',
-
-
     ],
     'as access' => [
         'class' => 'yii\filters\AccessControl',
@@ -59,7 +57,7 @@ return [
         'rules' => [
             [
                 'allow' => true,
-                'roles' => ['admin'],
+                'roles' => ['@'],
             ],
         ],
     ],
