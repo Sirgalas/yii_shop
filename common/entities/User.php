@@ -1,11 +1,13 @@
 <?php
 namespace common\entities;
 
+use phpDocumentor\Reflection\Types\Self_;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use common\traits\ Insantiate;
 
 /**
  * User model
@@ -23,6 +25,8 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    //use Insantiate;
+
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
@@ -33,6 +37,22 @@ class User extends ActiveRecord implements IdentityInterface
     public static function tableName()
     {
         return '{{%user}}';
+    }
+
+    public static function signup(string  $username, string $email ,string $password ): self
+    {
+        $user = new static();
+        $user->username = $username;
+        $user->email = $email;
+        $user->setPassword($password);
+        $user->created_at=time();
+        $user->status=self::STATUS_ACTIVE;
+        $user->generateAuthKey();
+       return $user;
+    }
+
+    public function isActive(){
+        return $this->status===self::STATUS_ACTIVE;
     }
 
     /**
